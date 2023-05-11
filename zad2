@@ -1,0 +1,70 @@
+import java.math.BigDecimal;
+import java.util.List;
+
+public class Furniture {
+    
+    private String name;
+    private BigDecimal price;
+    private BigDecimal vatRate;
+    
+    public Furniture(String name, BigDecimal price, BigDecimal vatRate) {
+        this.name = name;
+        this.price = price;
+        this.vatRate = vatRate;
+    }
+    
+    public BigDecimal getPrice() {
+        return price;
+    }
+    
+    public BigDecimal getPriceIncludingVat() {
+        return price.multiply(vatRate.add(BigDecimal.ONE));
+    }
+    
+}
+
+public class Room {
+    
+    private BigDecimal area;
+    private List<Furniture> furnitureList;
+    
+    public Room(BigDecimal area, List<Furniture> furnitureList) {
+        this.area = area;
+        this.furnitureList = furnitureList;
+    }
+    
+    public BigDecimal getTotalPriceIncludingVat() {
+        BigDecimal totalPrice = BigDecimal.ZERO;
+        for (Furniture furniture : furnitureList) {
+            totalPrice = totalPrice.add(furniture.getPriceIncludingVat());
+        }
+        return totalPrice;
+    }
+    
+}
+
+public class House {
+    
+    private List<Room> roomList;
+    private static int roomCount = 0;
+    
+    public House(List<Room> roomList) {
+        this.roomList = roomList;
+        roomCount += roomList.size();
+    }
+    
+    public void addRoom(Room room) {
+        roomList.add(room);
+        roomCount++;
+    }
+    
+    public void addRooms(List<Room> roomList) {
+        this.roomList.addAll(roomList);
+        roomCount += roomList.size();
+    }
+    
+    public int getRoomCount() {
+        return roomCount;
+    }
+    
+}
